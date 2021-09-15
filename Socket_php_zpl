@@ -1,0 +1,97 @@
+<?php
+error_reporting(E_ALL);
+
+/* Get the port for the service. */
+$port = "9100";
+
+/* Get the IP address for the target host. */
+$host = "192.168.1.117";
+
+/* construct the label */
+$label = "^XA
+~TA000
+~JSN
+^LT0
+^MNW
+^MTT
+^PON
+^PMN
+^LH0,0
+^JMA
+^PR8,8
+~SD23
+^JUS
+^LRN
+^CI27
+^PA0,1,1,0
+^MMT
+^PW799
+^LL400
+^LS-20
+^FO0,0^GB799,399,8,W^FS
+^FO7,160^GB792,0,8^FS
+^FO261,48^GB0,114,8^FS
+^FO529,48^GB0,117,8^FS
+
+
+^FO0,272^GB799,0,8^FS
+^BY2,3,56^FT7,245^BCN,,Y,N
+^FH\^FD(01)07804609500534(10)116369152964(13)210812^FS
+
+
+^FT-20,71^A0N,20,23^FH\^CI28^FDCSG:152964^FS^CI27
+^FT-20,94^A0N,20,20^FH\^CI28^FDPROVINCIA: Colchagua^FS^CI27
+^FT-20,133^A0N,20,20^FH\^CI28^FDREGIÓN: {REGION}^FS^CI27
+^FT-20,113^A0N,20,20^FH\^CI28^FDCOMUNA:San Fernando^FS^CI27
+^FT-20,155^A0N,20,20^FH\^CI28^FDGGN: 4056186887177^FS^CI27
+^FO3,43^GB796,0,8^FS
+^FT47,37^A0N,34,33^FB706,1,9,C^FH\^CI28^FDBlueberries / Todas^FS^CI27
+^FO282,279^GB0,114,8^FS
+^FO640,279^GB0,114,8^FS
+^FT269,71^A0N,20,23^FH\^CI28^FDCSP: 116369^FS^CI27
+^FT269,94^A0N,20,20^FH\^CI28^FDPROVINCIA: Curicó^FS^CI27
+^FT269,113^A0N,20,20^FH\^CI28^FDCOMUNA: Teno^FS^CI27
+^FT269,133^A0N,20,20^FH\^CI28^FDGLN: 2002^FS^CI27
+^FT537,71^A0N,20,23^FH\^CI28^FDCSE: 123456^FS^CI27
+^FT537,91^A0N,20,23^FH\^CI28^FDPACKED BY:^FS^CI27
+^FT537,130^A0N,20,23^FH\^CI28^FDREPUBLIC OF CHILE^FS^CI27
+^FT537,151^A0N,20,23^FH\^CI28^FDPRODUCT OF CHILE^FS^CI27
+^FT570,311^A0N,20,23^FH\^CI28^FDSIZE^FS^CI27
+^FO539,283^GB0,114,8^FS
+^FT-20,311^A0N,20,23^FH\^CI28^FDNET WEIGHT: 10X500 GR^FS^CI27
+^FT-20,332^A0N,20,23^FH\^CI28^FDLOT:^FS^CI27
+^FT-20,357^A0N,20,23^FH\^CI28^FDGTIN: 07804609500534^FS^CI27
+^FT-20,379^A0N,20,23^FH\^CI28^FDCAT: CLASS 1^FS^CI27
+^FT293,318^A0N,31,35^FH\^CI28^FDAR-4OZALCHM^FS^CI27
+^FT293,361^A0N,20,23^FH\^CI28^FDDATE: 12/08/2021^FS^CI27		
+^FT293,385^A0N,20,23^FH\^CI28^FDT: 116369-210812001^FS^CI27
+^FT677,354^A0N,32,35^FH\^CI28^FD92^FS^CI27
+^FT714,357^A0N,51,58^FH\^CI28^FD83^FS^CI27
+^FT520,373^A0N,51,51^FB155,1,13,C^FH\^CI28^FDBC^FS^CI27
+^FT90,332^A0N,20,18^FH\^CI28^FDD12-M08-11^FS^CI27
+^FT529,107^A0N,17,18^FH\^CI28^FD SOCIEDAD EXPORTADORA CYM SPA^FS^CI27
+^LRY^FO671,307^GB118,0,80^FS^LRN
+
+^XZ";
+
+$socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+if ($socket === false) {
+    echo "socket_create() failed: reason: " . socket_strerror(socket_last_error    ()) . "\n";
+} else {
+    echo "OK.\n";
+}
+
+echo "Attempting to connect to '$host' on port '$port'...";
+$result = socket_connect($socket, $host, $port);
+if ($result === false) {
+    echo "socket_connect() failed.\nReason: ($result) " . socket_strerror    (socket_last_error($socket)) . "\n";
+} else {
+    echo "OK.\n";
+}
+
+socket_write($socket, $label, strlen($label));
+socket_close($socket);
+
+?>
+
+// Credits to : https://github.com/erighetto
